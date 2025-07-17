@@ -3,7 +3,7 @@ import { getProjectBySlug, getAllSlugs } from "@/data/projects";
 import ProjectDetail from "@/components/sections/ProjectDetail";
 
 export async function generateStaticParams() {
-  const slugs = await getAllSlugs(); // 반드시 await
+  const slugs = await getAllSlugs();
   return slugs.map((slug) => ({
     slug,
   }));
@@ -12,9 +12,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const project = await getProjectBySlug(params.slug);
+  const { slug } = await params; // params를 await로 처리
+  const project = await getProjectBySlug(slug);
 
   if (!project) {
     return {
@@ -31,9 +32,10 @@ export async function generateMetadata({
 export default async function ProjectPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>; // Promise 타입으로 변경
 }) {
-  const project = await getProjectBySlug(params.slug);
+  const { slug } = await params; // params를 await로 처리
+  const project = await getProjectBySlug(slug);
 
   if (!project) {
     notFound();
