@@ -1,10 +1,9 @@
-// src/app/projects/[slug]/page.tsx
 import { notFound } from "next/navigation";
 import { getProjectBySlug, getAllSlugs } from "@/data/projects";
 import ProjectDetail from "@/components/sections/ProjectDetail";
 
 export async function generateStaticParams() {
-  const slugs = getAllSlugs();
+  const slugs = await getAllSlugs(); // 반드시 await
   return slugs.map((slug) => ({
     slug,
   }));
@@ -15,7 +14,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }) {
-  const project = await getProjectBySlug(params.slug); // ✅ await 추가
+  const project = await getProjectBySlug(params.slug);
 
   if (!project) {
     return {
