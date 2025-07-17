@@ -5,7 +5,11 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { FileText, ExternalLink } from "lucide-react";
-import { categories, getProjectsByCategory } from "@/data/projects";
+import {
+  categories,
+  getProjectsByCategory,
+  type Project,
+} from "@/data/projects";
 
 const Projects = () => {
   const ref = useRef(null);
@@ -29,7 +33,7 @@ const Projects = () => {
   };
 
   // 프로젝트의 카테고리 찾기
-  const getProjectCategory = (project: any) => {
+  const getProjectCategory = (project: Project) => {
     const projectsData = {
       Planning: [
         "다대다 번개 모임 매칭 플랫폼, 청춘상회",
