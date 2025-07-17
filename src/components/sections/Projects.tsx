@@ -4,9 +4,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { ExternalLink, Github } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import { FileText, ExternalLink } from "lucide-react";
 import { categories, getProjectsByCategory } from "@/data/projects";
 
 const Projects = () => {
@@ -15,6 +13,49 @@ const Projects = () => {
   const [activeFilter, setActiveFilter] = useState("All");
 
   const filteredProjects = getProjectsByCategory(activeFilter);
+
+  // 카테고리별 컬러 그라데이션
+  const getCategoryGradient = (category: string) => {
+    const gradients = {
+      Planning: "from-purple-500 to-pink-500",
+      "Data Analysis": "from-blue-500 to-cyan-500",
+      "Process Improvement": "from-green-500 to-teal-500",
+      Internship: "from-orange-500 to-red-500",
+    };
+    return (
+      gradients[category as keyof typeof gradients] ||
+      "from-gray-500 to-gray-600"
+    );
+  };
+
+  // 프로젝트의 카테고리 찾기
+  const getProjectCategory = (project: any) => {
+    const projectsData = {
+      Planning: [
+        "다대다 번개 모임 매칭 플랫폼, 청춘상회",
+        "LG유플러스 고객 통합 관리 서비스",
+        "Visualized Artifical Personal training",
+        "ETC for Planning",
+      ],
+      "Data Analysis": [
+        "재가공 동영상 콘텐츠 선별 프로젝트",
+        "텍스트마이닝 기반 MBTI별 노래 추천",
+      ],
+      "Process Improvement": ["프로세스 모델링 및 개선"],
+      Internship: ["주식회사 비주얼캠프 Intership"],
+    };
+
+    for (const [category, titles] of Object.entries(projectsData)) {
+      if (titles.includes(project.title)) {
+        return category;
+      }
+    }
+    return "Planning"; // 기본값
+  };
+
+  const openPDF = (file: string) => {
+    window.open(`/pdfs/${file}`, "_blank");
+  };
 
   return (
     <section id="projects" className="py-20">
@@ -59,59 +100,54 @@ const Projects = () => {
           layout
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {filteredProjects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
-              className="bg-card border border-border rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all group"
-            >
-              {/* 프로젝트 이미지 */}
-              <Link href={`/projects/${project.slug}`}>
-                <div className="relative h-48 overflow-hidden cursor-pointer">
-                  <Image
-                    src={project.thumbnail}
-                    alt={project.title}
-                    fill
-                    className="object-cover transition-transform group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          {filteredProjects.map((project, index) => {
+            const projectCategory = getProjectCategory(project);
 
-                  {/* 호버 시 보이는 버튼들 */}
-                  <div className="absolute top-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <motion.a
-                      href={project.liveUrl}
-                      whileHover={{ scale: 1.1 }}
-                      className="p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </motion.a>
-                    <motion.a
-                      href={project.githubUrl}
-                      whileHover={{ scale: 1.1 }}
-                      className="p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <Github className="h-4 w-4" />
-                    </motion.a>
+            return (
+              <motion.div
+                key={project.slug}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
+                className="bg-card border border-border rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all group cursor-pointer"
+                onClick={() => openPDF(project.file)}
+              >
+                {/* 트렌디한 그라데이션 헤더 */}
+                <div
+                  className={`relative h-32 bg-gradient-to-br ${getCategoryGradient(
+                    projectCategory
+                  )} overflow-hidden`}
+                >
+                  {/* 장식적인 패턴 */}
+                  <div className="absolute inset-0 opacity-20">
+                    <div className="absolute top-4 right-4 w-16 h-16 bg-white/20 rounded-full blur-xl"></div>
+                    <div className="absolute bottom-4 left-4 w-12 h-12 bg-white/15 rounded-full blur-lg"></div>
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-white/10 rounded-full blur-2xl"></div>
                   </div>
-                </div>
-              </Link>
 
-              {/* 프로젝트 정보 */}
-              <Link href={`/projects/${project.slug}`}>
-                <div className="p-6 cursor-pointer">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
-                      {project.category}
+                  {/* 파일 아이콘 */}
+                  <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      className="p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors"
+                    >
+                      <FileText className="h-5 w-5" />
+                    </motion.div>
+                  </div>
+
+                  {/* 카테고리 배지 */}
+                  <div className="absolute top-4 left-4">
+                    <span className="text-xs font-medium text-white bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
+                      {projectCategory}
                     </span>
                   </div>
+                </div>
 
+                {/* 프로젝트 정보 */}
+                <div className="p-6">
                   <h3 className="text-xl font-semibold text-foreground mb-3 line-clamp-2 group-hover:text-primary transition-colors">
                     {project.title}
                   </h3>
@@ -120,21 +156,17 @@ const Projects = () => {
                     {project.description}
                   </p>
 
-                  {/* 기술 스택 */}
-                  <div className="flex flex-wrap gap-2">
-                    {project.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-md"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                  {/* PDF 열기 버튼 */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">
+                      클릭하여 자세히 보기
+                    </span>
+                    <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                   </div>
                 </div>
-              </Link>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </motion.div>
 
         {/* 더 많은 프로젝트 버튼 */}

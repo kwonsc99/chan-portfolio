@@ -136,13 +136,14 @@ const About = () => {
             About Me
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
-            데이터로 세상을 <br />
-            <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              더 나은 곳으로
+            DNA: <br />
+            <span className="text-3xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Data analysis ∙ Networking ∙ Actionable
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            산업공학과 데이터 분석의 만남으로 비즈니스 가치를 창출합니다
+            Data를 기반으로 한 합리적 의사결정, 이해관계자와의 Networking,
+            <br /> 실행 가능한(Actionable) 전략 설계에 강점을 가진 관찰자입니다.{" "}
           </p>
         </motion.div>
 
