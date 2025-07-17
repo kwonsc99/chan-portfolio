@@ -15,7 +15,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }) {
-  const project = getProjectBySlug(params.slug);
+  const project = await getProjectBySlug(params.slug); // ✅ await 추가
 
   if (!project) {
     return {
@@ -29,8 +29,12 @@ export async function generateMetadata({
   };
 }
 
-export default function ProjectPage({ params }: { params: { slug: string } }) {
-  const project = getProjectBySlug(params.slug);
+export default async function ProjectPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const project = await getProjectBySlug(params.slug);
 
   if (!project) {
     notFound();
