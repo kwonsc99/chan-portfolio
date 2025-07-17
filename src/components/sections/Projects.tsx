@@ -7,6 +7,13 @@ import { useRef, useState } from "react";
 import { FileText, ExternalLink } from "lucide-react";
 import { categories, getProjectsByCategory } from "@/data/projects";
 
+type Project = {
+  title: string;
+  slug: string;
+  file: string;
+  description: string;
+};
+
 const Projects = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
@@ -29,7 +36,7 @@ const Projects = () => {
   };
 
   // 프로젝트의 카테고리 찾기
-  const getProjectCategory = (project: any) => {
+  const getProjectCategory = (project: Project) => {
     const projectsData = {
       Planning: [
         "다대다 번개 모임 매칭 플랫폼, 청춘상회",
