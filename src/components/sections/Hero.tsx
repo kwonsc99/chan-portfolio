@@ -281,7 +281,7 @@ const Hero = () => {
                   hoverColor: "hover:bg-secondary/80",
                   iconColor: "text-accent",
                 },
-              ].map((contact, index) => (
+              ].map((contact) => (
                 <motion.a
                   key={contact.label}
                   href={contact.href}

@@ -7,11 +7,7 @@ import { useRef, useState } from "react";
 import { ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  projectsData,
-  categories,
-  getProjectsByCategory,
-} from "@/data/projects";
+import { categories, getProjectsByCategory } from "@/data/projects";
 
 const Projects = () => {
   const ref = useRef(null);

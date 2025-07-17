@@ -7,7 +7,6 @@ import { useRef, useState } from "react";
 import {
   ArrowLeft,
   ExternalLink,
-  Github,
   Download,
   Calendar,
   Users,

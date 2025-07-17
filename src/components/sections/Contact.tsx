@@ -71,7 +71,7 @@ const Contact = () => {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Let's Work Together
+            {"Let's Work Together"}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             새로운 프로젝트나 협업 기회에 대해 언제든 연락주세요. 함께 혁신적인
@@ -92,7 +92,7 @@ const Contact = () => {
                 연락처 정보
               </h3>
               <div className="space-y-6">
-                {contactInfo.map((info, index) => (
+                {contactInfo.map((info) => (
                   <motion.a
                     key={info.title}
                     href={info.href}
